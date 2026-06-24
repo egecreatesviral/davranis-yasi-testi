@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kaç Yaşında Davranıyorsun? 🧠</title>
-    <!-- Tailwind CSS ve Alpine.js (Hafif ve hızlı animasyon/state yönetimi için) -->
+    <title>What's Your Behavioral Age? 🧠</title>
+    <!-- Tailwind CSS and Alpine.js -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
@@ -15,7 +15,7 @@
             background-color: #05070f;
             overflow-x: hidden;
         }
-        /* 3D Akışkan Organik Sıvı Küreler */
+        /* 3D Organic Liquid Blobs */
         .liquid-blob {
             position: absolute;
             border-radius: 50%;
@@ -30,7 +30,7 @@
             66% { transform: translate(-80px, 80px) scale(0.8) rotate(240deg); }
             100% { transform: translate(0px, 0px) scale(1) rotate(360deg); }
         }
-        /* Liquid Glassmorphism Kart Efekti */
+        /* Liquid Glassmorphism Card Effect */
         .liquid-glass {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(25px);
@@ -43,46 +43,46 @@
 </head>
 <body class="relative min-h-screen flex items-center justify-center p-4 selection:bg-purple-500 selection:text-white">
 
-    <!-- ARKAPLAN 3D LIQUID GLASS ELEMENTLERİ -->
+    <!-- 3D LIQUID GLASS BACKGROUND ELEMENTS -->
     <div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
         <div class="liquid-blob w-[500px] h-[500px] bg-gradient-to-r from-purple-600 to-pink-600 top-[-10%] left-[-10%]"></div>
         <div class="liquid-blob w-[600px] h-[600px] bg-gradient-to-r from-cyan-500 to-blue-600 bottom-[-10%] right-[-10%] [animation-delay:-5s]"></div>
         <div class="liquid-blob w-[400px] h-[400px] bg-gradient-to-r from-emerald-500 to-indigo-600 top-[40%] left-[30%] [animation-delay:-10s]"></div>
     </div>
 
-    <!-- ANA UYGULAMA (ALPINJS BEYNİ) -->
+    <!-- MAIN APP APP -->
     <div x-data="quizApp()" class="w-full max-w-xl liquid-glass rounded-3xl p-8 md:p-10 z-10 transition-all duration-500 transform hover:scale-[1.01]">
         
-        <!-- BAŞLANGIÇ EKRANI -->
+        <!-- START SCREEN -->
         <div x-show="step === 'start'" class="text-center space-y-6">
             <div class="inline-flex items-center justify-center w-16 h-16 bg-purple-500/10 border border-purple-500/30 rounded-2xl shadow-[0_0_20px_rgba(168,85,247,0.2)] mb-2 animate-bounce">
                 <span class="text-3xl">🧠</span>
             </div>
             <h1 class="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-slate-400">
-                Kaç Yaşında Davranıyorsun?
+                How Old Do You Act?
             </h1>
             <p class="text-slate-400 text-sm md:text-base leading-relaxed">
-                Gündelik alışkanlıkların ve kararların gerçek yaşını değil, ruhunun yaşını söyler. Testi çöz, modern 3D algoritma yaşını çıkarsın!
+                Your daily habits and decisions reveal your true mental age, not your birthday. Take this liquid test and find out!
             </p>
             <button @click="startQuiz()" class="w-full py-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold rounded-2xl shadow-lg shadow-purple-500/20 active:scale-[0.98] transition duration-200 cursor-pointer text-lg">
-                Sıvı Testi Başlat 🚀
+                Start Liquid Quiz 🚀
             </button>
         </div>
 
-        <!-- SORU EKRANI -->
+        <!-- QUESTIONS SCREEN -->
         <div x-show="step === 'questions'" x-transition.opacity>
-            <!-- İlerleme Çubuğu (Progress Bar) -->
+            <!-- Progress Bar -->
             <div class="w-full bg-white/5 h-1.5 rounded-full mb-8 overflow-hidden border border-white/5">
                 <div class="bg-gradient-to-r from-purple-500 to-cyan-400 h-full transition-all duration-300" :style="`width: ${(currentQuestion / totalQuestions) * 100}%`"></div>
             </div>
 
-            <!-- Soru Metni -->
+            <!-- Question Text -->
             <div class="mb-8">
-                <span class="text-xs font-bold uppercase tracking-widest text-purple-400" x-text="`Soru ${currentQuestion + 1} / ${totalQuestions}`"></span>
+                <span class="text-xs font-bold uppercase tracking-widest text-purple-400" x-text="`Question ${currentQuestion + 1} / ${totalQuestions}`"></span>
                 <h2 class="text-xl md:text-2xl font-bold text-white mt-2" x-text="questions[currentQuestion].title"></h2>
             </div>
 
-            <!-- Seçenekler -->
+            <!-- Options -->
             <div class="space-y-4">
                 <template x-for="(option, index) in questions[currentQuestion].options" :key="index">
                     <button @click="selectOption(option.points)" class="w-full text-left p-4 md:p-5 rounded-2xl bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.07] hover:border-purple-500/40 text-slate-300 hover:text-white font-medium transition-all duration-200 active:scale-[0.99] group flex items-center justify-between cursor-pointer">
@@ -93,26 +93,26 @@
             </div>
         </div>
 
-        <!-- SONUÇ EKRANI -->
+        <!-- RESULT SCREEN -->
         <div x-show="step === 'result'" x-transition.scale.85 class="text-center space-y-6">
             <div class="text-6xl animate-pulse" x-text="resultData.emoji"></div>
-            <span class="text-xs font-bold uppercase tracking-widest text-cyan-400">Ruhunun Yaşı Hesaplandı</span>
+            <span class="text-xs font-bold uppercase tracking-widest text-cyan-400">Your Behavioral Age Is Calculated</span>
             <h2 class="text-3xl font-extrabold text-white" x-text="resultData.title"></h2>
             <p class="text-slate-400 text-sm md:text-base leading-relaxed max-w-sm mx-auto" x-text="resultData.desc"></p>
             
             <div class="p-4 bg-white/[0.02] border border-white/[0.05] rounded-2xl inline-block">
-                <span class="text-xs text-slate-500 block uppercase tracking-wider mb-1">Hesaplanan Davranış Skoru</span>
+                <span class="text-xs text-slate-500 block uppercase tracking-wider mb-1">Calculated Age Range</span>
                 <span class="text-xl font-mono text-purple-400 font-bold" x-text="resultData.range"></span>
             </div>
 
             <button @click="resetQuiz()" class="w-full py-4 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold rounded-2xl transition duration-200 cursor-pointer">
-                Tekrar Çöz 🔄
+                Retake Quiz 🔄
             </button>
         </div>
 
     </div>
 
-    <!-- ALPINJS APP LOGIC (TESTİN BEYNİ) -->
+    <!-- APP LOGIC -->
     <script>
         function quizApp() {
             return {
@@ -122,76 +122,75 @@
                 resultData: {},
                 totalQuestions: 10,
                 
-                // Sorular ve her seçeneğin yaş gruplarına vurduğu puanlar
                 questions: [
-                    { title: "Sabah alarmın kaçta çalar?", options: [
-                        { text: "Alarm kurmam, ne zaman uyanırsam (Gecelerin yargıcıyım)", points: '18-25' },
-                        { text: "07:00 - Önce bir kahve, sonra iş/okul", points: '26-35' },
-                        { text: "05:30 - Güne erken başlamak en doğrusu", points: '36-50' },
-                        { text: "Alarm çalmadan 05:00'te gözlerim açılır zaten...", points: '71+' }
+                    { title: "What time does your morning alarm ring?", options: [
+                        { text: "No alarm, I wake up whenever I feel like it 🦉", points: '18-25' },
+                        { text: "07:00 AM - Quick coffee, then straight to work/school.", points: '26-35' },
+                        { text: "05:30 AM - Starting the day early is the right way.", points: '36-50' },
+                        { text: "My eyes just open automatically at 05:00 AM...", points: '71+' }
                     ]},
-                    { title: "Kavgada ne yaparsın?", options: [
-                        { text: "Hemen parlarım, lafımı esirgemem! 😤", points: '18-25' },
-                        { text: "Haklıysam tartışırım ama uzatmam, gerek yok.", points: '26-35' },
-                        { text: "Gözlerimle öyle bir bakarım ki karşı taraf susar.", points: '36-50' },
-                        { text: "'Aman ağzımızın tadı kaçmasın' der, oradan uzaklaşırım.", points: '51-70' }
+                    { title: "What do you do in a heated argument?", options: [
+                        { text: "I lose my temper easily and speak my mind out loud! 😤", points: '18-25' },
+                        { text: "I argue if I'm right, but I don't drag it out.", points: '26-35' },
+                        { text: "I just give a cold look that makes them quiet down.", points: '36-50' },
+                        { text: "I just walk away. Peace of mind is everything.", points: '51-70' }
                     ]},
-                    { title: "Akşam yemeğini ne zaman yersin?", options: [
-                        { text: "Gece 11-12 gibi acıkınca bir şeyler atıştırırım 🍕", points: '18-25' },
-                        { text: "İşten gelince, 19:30 - 20:00 arası dengeli.", points: '26-35' },
-                        { text: "Tam 18:00'de masa hazır olmalı, geç kalırsa midem yanar.", points: '51-70' },
-                        { text: "Hafif bir şeyler yer, 17:00'de akşamı kapatırım.", points: '71+' }
+                    { title: "When do you usually eat dinner?", options: [
+                        { text: "Late night munchies around 11 PM or midnight 🍕", points: '18-25' },
+                        { text: "Balanced time right after work, between 7:30 PM - 8:00 PM.", points: '26-35' },
+                        { text: "Exactly at 6:00 PM. If it's late, my stomach hurts.", points: '51-70' },
+                        { text: "Just a light snack at 5:00 PM and I'm done for the night.", points: '71+' }
                     ]},
-                    { title: "Büyük miktarda para görünce ilk ne yaparsın?", options: [
-                        { text: "Hemen harcayacak çılgın fikirler düşünürüm 🤑", points: '18-25' },
-                        { text: "Yarısını yatırıma, kalanını faturaya/ihtiyaca ayırırım.", points: '26-35' },
-                        { text: "Geleceğimi garantiye almak için gayrimenkul bakarım.", points: '36-50' },
-                        { text: "Çocuklara, torunlara paylaştırır, gerisini vadeliye atarım.", points: '51-70' }
+                    { title: "What's the first thing you do when you see a lot of money?", options: [
+                        { text: "Instantly think of crazy things to spend it on 🤑", points: '18-25' },
+                        { text: "Invest half of it, use the rest for bills and needs.", points: '26-35' },
+                        { text: "Look into real estate to secure my future stability.", points: '36-50' },
+                        { text: "Distribute it to kids/grandkids, put the rest in savings.", points: '51-70' }
                     ]},
-                    { title: "Gecenin kaçında yatarsın?", options: [
-                        { text: "Gece 3-4'ten önce gözüme uyku girmez, telefona bakarım.", points: '18-25' },
-                        { text: "En geç 12 veya 1 gibi yatarım, sabah kalkış var.", points: '26-35' },
-                        { text: "22:30 dedin mi benim mesai biter, koltukta sızarım.", points: '36-50' },
-                        { text: "Haberleri izler izlemez, saat 21:00 gibi yataktayım.", points: '51-70' }
+                    { title: "What time do you sleep at night?", options: [
+                        { text: "Can't sleep before 3-4 AM, scrolling on my phone.", points: '18-25' },
+                        { text: "Midnight at the latest. Early morning ahead.", points: '26-35' },
+                        { text: "10:30 PM and I'm out, usually falling asleep on the couch.", points: '36-50' },
+                        { text: "Right after the evening news, around 9:00 PM.", points: '51-70' }
                     ]},
-                    { title: "Annen seni aradığında ne yaparsın?", options: [
-                        { text: "Açar 'Efendim anne ya, meşgulüm' derim.", points: '18-25' },
-                        { text: "Hemen açar, hal hatır sorar, uzun uzun konuşurum.", points: '26-35' },
-                        { text: "Önemli bir şey mi oldu diye panikleyerek açarım.", points: '36-50' },
-                        { text: "Ben onu günde 3 kere ararım zaten, o beni aramaz.", points: '51-70' }
+                    { title: "What do you do when your mom calls you?", options: [
+                        { text: "Answer with 'Hey mom, I'm kinda busy right now'.", points: '18-25' },
+                        { text: "Pick up instantly and have a long, nice chat.", points: '26-35' },
+                        { text: "Panick a bit thinking something bad happened.", points: '36-50' },
+                        { text: "I call her 3 times a day anyway, she rarely needs to call.", points: '51-70' }
                     ]},
-                    { title: "Hafta sonu planın nedir?", options: [
-                        { text: "Sabaha kadar dışarıda eğlenmek veya aralıksız oyun oynamak!", points: '18-25' },
-                        { text: "Güzel bir kafede oturmak, arkadaşlarla kahve içmek.", points: '26-35' },
-                        { text: "Doğa yürüyüşü, sessiz sakin bir sahil kenarı veya ev temizliği.", points: '36-50' },
-                        { text: "Pazara gitmek, erkenden kalkıp gazete/haber bakmak, dinlenmek.", points: '51-70' }
+                    { title: "What's your typical weekend plan?", options: [
+                        { text: "Party till morning or non-stop gaming sessions!", points: '18-25' },
+                        { text: "Sitting at a cozy cafe, grabbing coffee with friends.", points: '26-35' },
+                        { text: "Nature walks, a quiet seaside, or deep cleaning the house.", points: '36-50' },
+                        { text: "Going to the local market, reading news early, resting.", points: '51-70' }
                     ]},
-                    { title: "Aşırı streslendiğinde canın ne çeker?", options: [
-                        { text: "Hamburger, pizza, cips, ne varsa gömerim 🍔", points: '18-25' },
-                        { text: "Sade bir kahve ya da belki bir kadeh bir şey.", points: '26-35' },
-                        { text: "Bitki çayı içer, balkona çıkıp derin nefes alırım.", points: '36-50' },
-                        { text: "Maden suyu veya sıcak bir çorba içimi rahatlatır.", points: '51-70' }
+                    { title: "What do you crave when you are extremely stressed?", options: [
+                        { text: "Burgers, pizza, chips... absolute comfort junk food 🍔", points: '18-25' },
+                        { text: "A strong cup of black coffee or maybe a relaxing drink.", points: '26-35' },
+                        { text: "Herbal tea and taking deep breaths on the balcony.", points: '36-50' },
+                        { text: "Just mineral water or hot soup to soothe my body.", points: '51-70' }
                     ]},
-                    { title: "Telefona bakarken genellikle ne düşünürsün?", options: [
-                        { text: "Keşfet'te kaydırırken zamanın nasıl geçtiğini anlamıyorum.", points: '18-25' },
-                        { text: "Şu mailleri halledeyim, borsaya/kriptoya bakayım.", points: '26-35' },
-                        { text: "Bu insanlar neden her şeyini sosyal medyada paylaşıyor?", points: '36-50' },
-                        { text: "Yazılar neden bu kadar küçük, bu telefon nasıl kapanıyor?", points: '71+' }
+                    { title: "What do you usually think when looking at your phone?", options: [
+                        { text: "Doomscrolling on the feed, completely losing track of time.", points: '18-25' },
+                        { text: "Checking emails, tracking stocks and crypto charts.", points: '26-35' },
+                        { text: "Why do people share every single detail of their lives?", points: '36-50' },
+                        { text: "Why is the text size so small? How do I close this app?", points: '71+' }
                     ]},
-                    { title: "Biri sana “görüşürüz” dese ne anlarsın?", options: [
-                        { text: "Görüşürüz işte, bay bay yani 👋", points: '18-25' },
-                        { text: "Yakın zamanda bir plan yapmamız gerekiyor diye algılarım.", points: '26-35' },
-                        { text: "Kibarca konuşmayı bitirmek istediğini anlarım.", points: '36-50' },
-                        { text: "Allah'a emanet ol evladım, yolun açık olsun demek.", points: '51-70' }
+                    { title: "What goes through your mind when someone says 'See you'?", options: [
+                        { text: "Just a casual bye bye, nothing deep 👋", points: '18-25' },
+                        { text: "I assume we need to make concrete plans to meet soon.", points: '26-35' },
+                        { text: "I take it as a polite way to wrap up the conversation.", points: '36-50' },
+                        { text: "Bless you, stay safe on your journey.", points: '51-70' }
                     ]}
                 ],
 
                 ageData: {
-                    '18-25': { title: "Hâlâ Çocuksun! 🧒", emoji: "🧒", desc: "Ruhun kıpır kıpır, kuralları sevmiyorsun ve hayatı tamamen anlık eğlencelere göre yaşıyorsun.", range: "18 - 25 Yaş" },
-                    '26-35': { title: "Dengeli Birisin! 🧑", emoji: "🧑", desc: "Hayatın sorumluluklarını almışsın ama içindeki o enerjik ve eğlenceli çocuğu da henüz öldürmemişsin.", range: "26 - 35 Yaş" },
-                    '36-50': { title: "Olgunlaşmışsın! 👨", emoji: "👨", desc: "Hayatın fırtınalarını atlatmış, ne istediğini çok iyi bilen, sakin ve mantıklı bir limana demir atmışsın.", range: "36 - 50 Yaş" },
-                    '51-70': { title: "Neden Bu Kadar Yaşlısın? 😂", emoji: "👴", desc: "Hayat seni biraz erken yormuş sanki! İç sesin sürekli söyleniyor. Acilen biraz heyecana ihtiyacın var.", range: "51 - 70 Yaş" },
-                    '71+': { title: "Emekli Olmalısın Kardeşim! 😭", emoji: "🧓", desc: "Sen tüm dünyayı çözmüşsün. Ununu elemiş, eleğini asmış, tam bir huzur ve bilgelik abidesisin.", range: "71+ Yaş" }
+                    '18-25': { title: "You're Still a Kid! 🧒", emoji: "🧒", desc: "Your energy is wild! You hate rules and you live purely for instant, fun moments.", range: "18 - 25 Years Old" },
+                    '26-35': { title: "You are Balanced! 🧑", emoji: "🧑", desc: "You've taken on life's responsibilities, but you definitely haven't killed the fun inner child yet.", range: "26 - 35 Years Old" },
+                    '36-50': { title: "You are Mature! 👨", emoji: "👨", desc: "You've weathered the storms. You know exactly what you want, anchored in a calm and logical mind.", range: "36 - 50 Years Old" },
+                    '51-70': { title: "Why So Old? 😂", emoji: "👴", desc: "Life tired you out a bit early! Your inner voice grumbles a lot. You desperately need some adrenaline.", range: "51 - 70 Years Old" },
+                    '71+': { title: "Time to Retire, Buddy! 😭", emoji: "🧓", desc: "You've completely solved the matrix. Peaceful, wise, and totally done with the world's drama.", range: "71+ Years Old" }
                 },
 
                 startQuiz() {
@@ -208,7 +207,6 @@
                 },
 
                 calculateResult() {
-                    // En yüksek puanı alan yaş grubunu buluyoruz
                     let maxGroup = '18-25';
                     let maxScore = -1;
                     
